@@ -25,6 +25,9 @@ public class TrainButtonActivity extends AppCompatActivity {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
+            else{
+
+            }
 
         } else {
 

@@ -1,15 +1,10 @@
 package com.example.myfirstapp;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.view.Display;
-
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
+import java.io.IOException;
+import java.util.UUID;
 
 
 /**
@@ -19,20 +14,58 @@ import android.view.Display;
 public class BluetoothConnection {
     private final static int REQUEST_ENABLE_BT = 1;
 
-    public BluetoothConnection(Activity activity){
-//        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        if (mBluetoothAdapter != null) {
-//            if (!mBluetoothAdapter.isEnabled()) {
-//                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-////                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//              startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//            }
-//
-//        }
-//        else{
-//
-//            Alert.show(context,"Bluetooth is not supported on this device!");
-//        }
+    private class AcceptThread extends Thread {
+        private final BluetoothServerSocket mmServerSocket;
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        public AcceptThread() {
+
+            // Use a temporary object that is later assigned to mmServerSocket
+            // because mmServerSocket is final.
+            BluetoothServerSocket tmp = null;
+            try {
+                // MY_UUID is the app's UUID string, also used by the client code.
+                tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("device", UUID.randomUUID());
+            } catch (IOException e) {
+
+//                Log.e(Tag, "Socket's listen() method failed", e);
+            }
+            mmServerSocket = tmp;
+        }
+
+        public void run() {
+            BluetoothSocket socket = null;
+            // Keep listening until exception occurs or a socket is returned.
+            while (true) {
+                try {
+                    socket = mmServerSocket.accept();
+                } catch (IOException e) {
+//                    Log.e(TAG, "Socket's accept() method failed", e);
+                    break;
+                }
+
+                if (socket != null) {
+                    // A connection was accepted. Perform work associated with
+                    // the connection in a separate thread.
+//                    manageMyConnectedSocket(socket);
+                    try {
+                        mmServerSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Closes the connect socket and causes the thread to finish.
+        public void cancel() {
+            try {
+                mmServerSocket.close();
+            } catch (IOException e) {
+//                Log.e(TAG, "Could not close the connect socket", e);
+            }
+        }
     }
 
 
