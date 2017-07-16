@@ -17,6 +17,10 @@
         </activity>
         <activity android:name=".TrainingActivity" />
         <activity android:name=".RunRemoteActivity" />
+        <activity android:name=".TrainButtonActivity"></activity>
     </application>
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
 </manifest>

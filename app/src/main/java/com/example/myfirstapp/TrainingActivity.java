@@ -31,4 +31,9 @@ public class TrainingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void trainButton(View view){
+        Intent intent = new Intent(this, TrainButtonActivity.class);
+        startActivity(intent);
+    }
+
 }

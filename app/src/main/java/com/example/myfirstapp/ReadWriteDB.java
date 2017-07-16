@@ -19,7 +19,7 @@ public class ReadWriteDB {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
-// you will actually use after this query.
+        // you will actually use after this query.
         String[] projection = {
                 FeedEntry.ID,
                 FeedEntry.COLUMN_NAME_TITLE
@@ -56,7 +56,7 @@ public class ReadWriteDB {
 
     }
 
-    public void write(Context context,String remote_name){
+    public void write(Context context, String remote_name) {
         DBConnection mDbHelper = new DBConnection(context);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -67,5 +67,36 @@ public class ReadWriteDB {
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(FeedEntry.TABLE_NAME, null, values);
 
+    }
+
+    public void delete(Context context, String remote_name) {
+
+        DBConnection mDbHelper = new DBConnection(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        // Define 'where' part of query.
+        String selection = FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = {remote_name};
+        // Issue SQL statement.
+        db.delete(FeedEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public void update(Context context, String title, String remote_name) {
+        DBConnection mDbHelper = new DBConnection(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(FeedEntry.COLUMN_NAME_TITLE, title);
+
+        // Which row to update, based on the title
+        String selection = FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
+        String[] selectionArgs = {remote_name};
+
+        int count = db.update(
+                FeedEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
     }
 }
