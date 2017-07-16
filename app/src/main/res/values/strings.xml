@@ -2,7 +2,7 @@
     <string name="app_name">RemoteApp</string>
     <string name="edit_message">Enter a name</string>
     <string name="button_send">Train</string>
-    <string name="remote_done">Done</string>
+    <string name="add_remote">Done</string>
 </resources>
 
 
