@@ -55,6 +55,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="16dp"
+        android:onClick="startReceiving" />
 
 </android.support.constraint.ConstraintLayout>
